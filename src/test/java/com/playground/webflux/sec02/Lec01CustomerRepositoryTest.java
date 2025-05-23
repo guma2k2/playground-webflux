@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reactor.test.StepVerifier;
 
 
-public class Lec01CustomRepositoryTest extends AbstractTest {
+public class Lec01CustomerRepositoryTest extends AbstractTest {
 
-    private static final Logger log = LoggerFactory.getLogger(Lec01CustomRepositoryTest.class);
+    private static final Logger log = LoggerFactory.getLogger(Lec01CustomerRepositoryTest.class);
 
 
     @Autowired
@@ -86,6 +86,19 @@ public class Lec01CustomRepositoryTest extends AbstractTest {
                 .then(this.customerRepository.count())
                 .as(StepVerifier::create)
                 .expectNext(10L)
+                .expectComplete()
+                .verify();
+
+    }
+
+    @Test
+    public void updateCustomer() {
+        this.customerRepository.findByName("ethan")
+                .doOnNext(c -> c.setName("ethann"))
+                .flatMap(c -> this.customerRepository.save(c))
+                .doOnNext(c -> log.info("{}", c))
+                .as(StepVerifier::create)
+                .assertNext(c -> Assertions.assertEquals(c.getName(), "ethann"))
                 .expectComplete()
                 .verify();
 
