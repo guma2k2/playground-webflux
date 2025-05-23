@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 
@@ -86,6 +87,19 @@ public class Lec01CustomRepositoryTest extends AbstractTest {
                 .then(this.customerRepository.count())
                 .as(StepVerifier::create)
                 .expectNext(10L)
+                .expectComplete()
+                .verify();
+
+    }
+
+    @Test
+    public void updateCustomer() {
+        this.customerRepository.findByName("ethan")
+                .doOnNext(c -> c.setName("ethann"))
+                .flatMap(c -> this.customerRepository.save(c))
+                .doOnNext(c -> log.info("{}", c))
+                .as(StepVerifier::create)
+                .assertNext(c -> Assertions.assertEquals(c.getName(), "ethann"))
                 .expectComplete()
                 .verify();
 
