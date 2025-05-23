@@ -7,13 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 
-public class Lec01CustomRepositoryTest extends AbstractTest {
+public class Lec01CustomerRepositoryTest extends AbstractTest {
 
-    private static final Logger log = LoggerFactory.getLogger(Lec01CustomRepositoryTest.class);
+    private static final Logger log = LoggerFactory.getLogger(Lec01CustomerRepositoryTest.class);
 
 
     @Autowired

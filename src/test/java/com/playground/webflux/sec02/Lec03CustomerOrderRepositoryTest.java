@@ -1,8 +1,6 @@
 package com.playground.webflux.sec02;
 
-import com.playground.webflux.sec02.entity.Customer;
-import com.playground.webflux.sec02.entity.Product;
-import com.playground.webflux.sec02.repository.CustomerRepository;
+import com.playground.webflux.sec02.repository.CustomerOrderRepository;
 import com.playground.webflux.sec02.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,44 +12,38 @@ import org.springframework.data.domain.Sort;
 import reactor.test.StepVerifier;
 
 
-public class Lec02ProductRepositoryTest extends AbstractTest {
+public class Lec03CustomerOrderRepositoryTest extends AbstractTest {
 
-    private static final Logger log = LoggerFactory.getLogger(Lec02ProductRepositoryTest.class);
+    private static final Logger log = LoggerFactory.getLogger(Lec03CustomerOrderRepositoryTest.class);
 
 
     @Autowired
-    private ProductRepository productRepository;
+    private CustomerOrderRepository customerOrderRepository;
 
 
 
     @Test
-    public void findByPriceRange() {
-        this.productRepository.findByPriceBetween(750, 1000)
+    public void productsOrderByCustomer() {
+        this.customerOrderRepository.getProductsOrderByCustomer("mike")
                 .doOnNext(c -> log.info("{}", c))
                 .as(StepVerifier::create)
-                .expectNextCount(3)
+                .expectNextCount(2)
                 .expectComplete()
                 .verify();
 
     }
 
     @Test
-    public void pageable() {
-        this.productRepository.findBy(PageRequest.of(0, 3).withSort(Sort.by("price").ascending()))
+    public void orderDetailsByProduct() {
+        this.customerOrderRepository.getOrderDetailsByProduct("iphone 20")
                 .doOnNext(c -> log.info("{}", c))
                 .as(StepVerifier::create)
-                .assertNext(p -> Assertions.assertEquals(200, p.getPrice()))
-                .assertNext(p -> Assertions.assertEquals(250, p.getPrice()))
-                .assertNext(p -> Assertions.assertEquals(300, p.getPrice()))
+                .assertNext(dto -> Assertions.assertEquals(975, dto.amount()))
+                .assertNext(dto -> Assertions.assertEquals(950, dto.amount()))
                 .expectComplete()
                 .verify();
 
     }
-
-
-
-
-
 
 
 }
