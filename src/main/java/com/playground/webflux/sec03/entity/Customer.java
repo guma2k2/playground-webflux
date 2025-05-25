@@ -1,10 +1,10 @@
-package com.playground.webflux.sec02.entity;
+package com.playground.webflux.sec03.entity;
 
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table("customer")
+
 public class Customer {
 
 
