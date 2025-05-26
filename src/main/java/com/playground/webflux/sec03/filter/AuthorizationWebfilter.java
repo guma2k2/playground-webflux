@@ -1,5 +1,7 @@
 package com.playground.webflux.sec03.filter;
 
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ServerWebExchange;
@@ -11,7 +13,8 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class AuthenticationWebfilter implements WebFilter {
+@Order(2)
+public class AuthorizationWebfilter implements WebFilter {
 
     private static final Map<String, Category> TOKEN_CATEGORY_MAP = Map.of(
             "secret123", Category.STANDARD,
@@ -19,10 +22,24 @@ public class AuthenticationWebfilter implements WebFilter {
     );
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        String token = exchange.getRequest().getHeaders().getFirst("auth-token");
-        if (Objects.nonNull(token) && TOKEN_CATEGORY_MAP.containsKey(token)) {
+        Category category = exchange.getAttributeOrDefault("category", Category.STANDARD);
+        return switch (category){
+            case STANDARD -> standard(exchange, chain);
+            case PRIME -> prime(exchange, chain);
+        };
+    }
+
+
+    public Mono<Void> prime(ServerWebExchange exchange, WebFilterChain chain) {
+        return chain.filter(exchange);
+    }
+
+    public Mono<Void> standard(ServerWebExchange exchange, WebFilterChain chain) {
+        boolean isGet = HttpMethod.GET.equals(exchange.getRequest().getMethod());
+        if (isGet) {
             return chain.filter(exchange);
         }
-        return Mono.fromRunnable(() -> exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED));
+        return Mono.fromRunnable(() -> exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN));
+
     }
 }
