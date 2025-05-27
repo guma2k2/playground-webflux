@@ -2,42 +2,31 @@ package com.playground.webflux.sec07;
 
 import com.playground.webflux.sec07.dto.Product;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
-public class Lec01MonoTest extends AbstractWebClient{
+public class Lec02FluxTest extends AbstractWebClient{
 
 
     private final WebClient client = createWebClient();
 
 
     @Test
-    public void simpleGet() throws InterruptedException {
-        this.client.get()
-                .uri("/lec01/product/1")
+    public void streamingResponse()  {
+        client.get()
+                .uri("/lec02/product/stream")
                 .retrieve()
-                .bodyToMono(Product.class)
+                .bodyToFlux(Product.class)
+                .take(Duration.ofSeconds(3))
                 .doOnNext(print())
-                .subscribe();
-
-        Thread.sleep(2000);
+                .then()
+                .as(StepVerifier::create)
+                .expectComplete()
+                .verify();
     }
 
 
-    @Test
-    public void concurrentRequests() throws InterruptedException {
-        for (int i = 0; i <= 100; i++) {
-            this.client.get()
-                    .uri("/lec01/product/{id}", i )
-                    .retrieve()
-                    .bodyToMono(Product.class)
-                    .doOnNext(print())
-                    .subscribe();
-        }
-
-        Thread.sleep(2000);
-    }
 
 }

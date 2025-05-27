@@ -1,7 +1,6 @@
 package com.playground.webflux.sec07;
 
 import com.playground.webflux.sec07.dto.CalculatorResponse;
-import com.playground.webflux.sec07.dto.Product;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,22 +11,39 @@ import reactor.test.StepVerifier;
 
 import java.util.Map;
 
-public class Lec05ErrorResponseTest extends AbstractWebClient{
+public class Lec06QueryParamsTest extends AbstractWebClient{
 
-    private static final Logger log = LoggerFactory.getLogger(Lec05ErrorResponseTest.class);
+    private static final Logger log = LoggerFactory.getLogger(Lec06QueryParamsTest.class);
 
     private final WebClient client = createWebClient();
-
     @Test
-    public void handlingError() {
+    public void uriBuilderVariables() {
+        var path = "/lec06/calculator";
+        var query = "first={first}&second={second}&operation={operation}";
         this.client.get()
-                .uri("/lec05/calculator/{a}/{b}", 10, 20)
-                .header("operation", "@")
+                .uri(builder -> builder.path(path).query(query).build(10, 20, "+"))
                 .retrieve()
                 .bodyToMono(CalculatorResponse.class)
-                .doOnError(WebClientResponseException.class, ex -> log.info("{}", ex.getResponseBodyAs(ProblemDetail.class)))
-                .onErrorReturn(WebClientResponseException.InternalServerError.class, new CalculatorResponse(0, 0, null, 0.0))
-                .onErrorReturn(WebClientResponseException.BadRequest.class, new CalculatorResponse(0, 0, null, 0.0))
+                .doOnNext(print())
+                .then()
+                .as(StepVerifier::create)
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    public void uriBuilderMap() {
+        var path = "/lec06/calculator";
+        var query = "first={first}&second={second}&operation={operation}";
+        var map = Map.of(
+                "first", 10,
+                "second", 20,
+                "operation", "*"
+        );
+        this.client.get()
+                .uri(builder -> builder.path(path).query(query).build(map))
+                .retrieve()
+                .bodyToMono(CalculatorResponse.class)
                 .doOnNext(print())
                 .then()
                 .as(StepVerifier::create)
