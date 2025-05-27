@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.reactive.function.server.ServerRequest;
 
 import java.net.URI;
 
@@ -28,4 +29,5 @@ public class ApplicationExceptionHandler {
         problemDetail.setTitle("Invalid input ");
         return problemDetail;
     }
+
 }
