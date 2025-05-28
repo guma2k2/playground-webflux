@@ -1,0 +1,4 @@
+package com.playground.webflux.sec04;
+
+public class EntityMapper {
+}
