@@ -1,11 +1,8 @@
-package com.playground.webflux.sec07;
+package com.playground.webflux.sec03;
 
-import com.playground.webflux.sec07.dto.Product;
+import com.playground.webflux.sec03.dto.Product;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.time.Duration;
 
 public class Lec01MonoTest extends AbstractWebClient{
 

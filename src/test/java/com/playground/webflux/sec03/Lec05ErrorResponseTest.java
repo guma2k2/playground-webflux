@@ -1,7 +1,6 @@
-package com.playground.webflux.sec07;
+package com.playground.webflux.sec03;
 
-import com.playground.webflux.sec07.dto.CalculatorResponse;
-import com.playground.webflux.sec07.dto.Product;
+import com.playground.webflux.sec03.dto.CalculatorResponse;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +10,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.util.Map;
 
 public class Lec05ErrorResponseTest extends AbstractWebClient{
 

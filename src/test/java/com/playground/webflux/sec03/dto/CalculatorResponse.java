@@ -1,4 +1,4 @@
-package com.playground.webflux.sec07.dto;
+package com.playground.webflux.sec03.dto;
 
 public record CalculatorResponse(Integer first,
                                  Integer second,
