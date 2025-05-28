@@ -1,6 +1,6 @@
-package com.playground.webflux.sec07;
+package com.playground.webflux.sec03;
 
-import com.playground.webflux.sec07.dto.Product;
+import com.playground.webflux.sec03.dto.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;

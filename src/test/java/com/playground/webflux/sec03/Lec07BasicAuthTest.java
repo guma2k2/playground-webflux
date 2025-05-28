@@ -1,18 +1,18 @@
-package com.playground.webflux.sec07;
+package com.playground.webflux.sec03;
 
-import com.playground.webflux.sec07.dto.Product;
+import com.playground.webflux.sec03.dto.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.test.StepVerifier;
 
-public class Lec08BearerAuthTest extends AbstractWebClient{
+public class Lec07BasicAuthTest extends AbstractWebClient{
 
-    private final WebClient client = createWebClient(b -> b.defaultHeaders(h -> h.setBearerAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9")));
+    private final WebClient client = createWebClient(b -> b.defaultHeaders(h -> h.setBasicAuth("java", "secret")));
 
     @Test
-    public void bearerAuth() {
+    public void basicAuth() {
         this.client.get()
-                .uri("/lec08/product/{id}", 1)
+                .uri("/lec07/product/{id}", 1)
                 .retrieve()
                 .bodyToMono(Product.class)
                 .doOnNext(print())

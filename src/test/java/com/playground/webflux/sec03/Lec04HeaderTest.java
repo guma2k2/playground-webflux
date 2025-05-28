@@ -1,12 +1,10 @@
-package com.playground.webflux.sec07;
+package com.playground.webflux.sec03;
 
-import com.playground.webflux.sec07.dto.Product;
+import com.playground.webflux.sec03.dto.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.Map;
 
 public class Lec04HeaderTest extends AbstractWebClient{
